@@ -1,0 +1,562 @@
+[
+    {
+        "id": "ae0d530744046dfa",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "72473b3995ff3a3b",
+        "type": "tab",
+        "label": "IoT Real-Time Sim",
+        "disabled": false
+    },
+    {
+        "id": "5ab478c70183017b",
+        "type": "postgreSQLConfig",
+        "name": "Local PG",
+        "host": "postgres",
+        "hostFieldType": "str",
+        "port": 5432,
+        "portFieldType": "num",
+        "database": "iotdb",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": 10,
+        "maxFieldType": "num",
+        "idle": 1000,
+        "idleFieldType": "num",
+        "connectionTimeout": 10000,
+        "connectionTimeoutFieldType": "num",
+        "user": "iot",
+        "userFieldType": "str",
+        "password": "iotpass",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "ui_tab_main",
+        "type": "ui_tab",
+        "name": "IoT Room",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ui_group_main",
+        "type": "ui_group",
+        "name": "Sterowanie i podgląd",
+        "tab": "ui_tab_main",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2360464895c79b93",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "Local Mosquitto",
+        "broker": "mosquitto",
+        "port": "1883",
+        "protocolVersion": "5",
+        "keepalive": "60",
+        "cleansession": true
+    },
+    {
+        "id": "pg_config",
+        "type": "postgreSQLConfig",
+        "name": "Local PG",
+        "host": "postgres",
+        "port": "5432",
+        "database": "iotdb",
+        "ssl": "false",
+        "max": "12",
+        "idle": "1000",
+        "user": "iot",
+        "password": "iotpass"
+    },
+    {
+        "id": "mqtt_in_temp",
+        "type": "mqtt in",
+        "z": "72473b3995ff3a3b",
+        "name": "TEMP IN",
+        "topic": "home/room1/temperature",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 360,
+        "y": 260,
+        "wires": [
+            [
+                "ui_chart_temp",
+                "fn_controller"
+            ]
+        ]
+    },
+    {
+        "id": "ui_chart_temp",
+        "type": "ui_chart",
+        "z": "72473b3995ff3a3b",
+        "name": "Temperatura [°C]",
+        "group": "ui_group_main",
+        "order": 1,
+        "width": "",
+        "height": "",
+        "label": "Temperatura [°C]",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "15",
+        "ymax": "30",
+        "removeOlder": 10,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": "",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 590,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_in_aqi",
+        "type": "mqtt in",
+        "z": "72473b3995ff3a3b",
+        "name": "AQI IN",
+        "topic": "home/room1/aqi",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 370,
+        "y": 380,
+        "wires": [
+            [
+                "ui_chart_aqi",
+                "fn_controller"
+            ]
+        ]
+    },
+    {
+        "id": "ui_chart_aqi",
+        "type": "ui_chart",
+        "z": "72473b3995ff3a3b",
+        "name": "Jakość powietrza [%]",
+        "group": "ui_group_main",
+        "order": 2,
+        "label": "Jakość powietrza [%]",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 10,
+        "removeOlderUnit": "3600",
+        "outputs": 1,
+        "x": 600,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_in_pur_state",
+        "type": "mqtt in",
+        "z": "72473b3995ff3a3b",
+        "name": "PURIFIER STATE",
+        "topic": "home/room1/state/airpurifier",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 870,
+        "y": 400,
+        "wires": [
+            [
+                "ui_led_pur"
+            ]
+        ]
+    },
+    {
+        "id": "ui_set_temp",
+        "type": "ui_text_input",
+        "z": "72473b3995ff3a3b",
+        "name": "Ustaw aktualną temperaturę (°C)",
+        "label": "Ustaw aktualną temperaturę (°C)",
+        "tooltip": "",
+        "group": "ui_group_main",
+        "order": 5,
+        "width": "",
+        "height": "",
+        "passthru": true,
+        "mode": "number",
+        "delay": 300,
+        "topic": "",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "str",
+        "x": 440,
+        "y": 520,
+        "wires": [
+            [
+                "fn_inject_temp"
+            ]
+        ]
+    },
+    {
+        "id": "fn_inject_temp",
+        "type": "function",
+        "z": "72473b3995ff3a3b",
+        "name": "To MQTT inject TEMP",
+        "func": "let v = parseFloat(msg.payload);\nif (isNaN(v)) return null;\nreturn { payload: v.toFixed(2), topic: 'home/room1/inject/temperature' };",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 520,
+        "wires": [
+            [
+                "mqtt_out_inject_temp"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_inject_temp",
+        "type": "mqtt out",
+        "z": "72473b3995ff3a3b",
+        "name": "MQTT OUT inject (TEMP)",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "mqtt_broker",
+        "x": 970,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "ui_set_aqi",
+        "type": "ui_text_input",
+        "z": "72473b3995ff3a3b",
+        "name": "Ustaw aktualną jakość (%)",
+        "label": "Ustaw aktualną jakość (%)",
+        "group": "ui_group_main",
+        "order": 6,
+        "mode": "number",
+        "delay": 300,
+        "x": 420,
+        "y": 560,
+        "wires": [
+            [
+                "fn_inject_aqi"
+            ]
+        ]
+    },
+    {
+        "id": "fn_inject_aqi",
+        "type": "function",
+        "z": "72473b3995ff3a3b",
+        "name": "To MQTT inject AQI",
+        "func": "let v = parseFloat(msg.payload);\nif (isNaN(v)) return null;\nv = Math.max(0, Math.min(100, v));\nreturn { payload: String(Math.round(v)), topic: 'home/room1/inject/aqi' };",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 560,
+        "wires": [
+            [
+                "mqtt_out_inject_aqi"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_inject_aqi",
+        "type": "mqtt out",
+        "z": "72473b3995ff3a3b",
+        "name": "MQTT OUT inject (AQI)",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "mqtt_broker",
+        "x": 910,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "fn_controller",
+        "type": "function",
+        "z": "72473b3995ff3a3b",
+        "name": "Kontroler HVAC + Purifier",
+        "func": "const TARGET = 21.0;\nconst EPS = 0.05; // strefa martwa\nconst PUR_THRESHOLD = 80; // %\n\n// oczekujemy dwóch rodzajów wejść: temperatura i jakość\n// najlepiej podać ten node dwoma przewodami (z TEMP IN i AQI IN)\n\nlet t = flow.get('last_temp');\nlet q = flow.get('last_aqi');\n\nif (msg.topic && msg.topic.includes('temperature')) {\n  t = parseFloat(msg.payload);\n  if (!isNaN(t)) flow.set('last_temp', t);\n}\nif (msg.topic && msg.topic.includes('aqi')) {\n  q = parseFloat(msg.payload);\n  if (!isNaN(q)) flow.set('last_aqi', q);\n}\n\nlet out_cmds = [];\n\n// HVAC: decyduj tylko jeśli mamy temp\nif (typeof t === 'number') {\n  if (t > TARGET + EPS) {\n    // za ciepło -> CHŁODZENIE ON (grzanie OFF)\n    out_cmds.push({topic:`home/room1/cmd/heating`, payload:'OFF'});\n    out_cmds.push({topic:`home/room1/cmd/ac`, payload:'ON'});\n  } else if (t < TARGET - EPS) {\n    // za zimno -> GRZANIE ON (chłodzenie OFF)\n    out_cmds.push({topic:`home/room1/cmd/ac`, payload:'OFF'});\n    out_cmds.push({topic:`home/room1/cmd/heating`, payload:'ON'});\n  } else {\n    // w pobliżu celu -> wszystko OFF\n    out_cmds.push({topic:`home/room1/cmd/ac`, payload:'OFF'});\n    out_cmds.push({topic:`home/room1/cmd/heating`, payload:'OFF'});\n  }\n}\n\n// Purifier: decyduj jeśli mamy jakość\nif (typeof q === 'number') {\n  if (q < PUR_THRESHOLD) {\n    out_cmds.push({topic:`home/room1/cmd/airpurifier`, payload:'ON'});\n  } else {\n    out_cmds.push({topic:`home/room1/cmd/airpurifier`, payload:'OFF'});\n  }\n}\n\nreturn [out_cmds];",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 320,
+        "wires": [
+            [
+                "mqtt_out_cmd"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_cmd",
+        "type": "mqtt out",
+        "z": "72473b3995ff3a3b",
+        "name": "MQTT OUT CMD",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "mqtt_broker",
+        "x": 1050,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "ui_btn_reset_charts",
+        "type": "ui_button",
+        "z": "72473b3995ff3a3b",
+        "name": "Reset wykresów",
+        "group": "ui_group_main",
+        "order": 0,
+        "width": "",
+        "height": "",
+        "passthru": false,
+        "label": "Reset wykresów",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "RESET",
+        "payloadType": "str",
+        "topic": "",
+        "topicType": "str",
+        "x": 220,
+        "y": 320,
+        "wires": [
+            [
+                "fn_clear_charts"
+            ]
+        ]
+    },
+    {
+        "id": "fn_clear_charts",
+        "type": "function",
+        "z": "72473b3995ff3a3b",
+        "name": "Clear charts",
+        "func": "// wysłanie pustej tablicy do ui_chart czyści dane\n// wyjście #1 -> TEMP chart, wyjście #2 -> AQI chart\nreturn [ {payload: []}, {payload: []} ];",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "ui_chart_temp"
+            ],
+            [
+                "ui_chart_aqi"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_in_hvac_mode",
+        "type": "mqtt in",
+        "z": "72473b3995ff3a3b",
+        "name": "HVAC MODE",
+        "topic": "home/room1/state/hvac_mode",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 830,
+        "y": 260,
+        "wires": [
+            [
+                "ui_led_hvac"
+            ]
+        ]
+    },
+    {
+        "id": "ui_led_hvac",
+        "type": "ui_template",
+        "z": "72473b3995ff3a3b",
+        "group": "ui_group_main",
+        "name": "LED HVAC",
+        "order": 3,
+        "width": "",
+        "height": "",
+        "format": "<style>\n    .card {\n        padding: 8px 12px;\n        border: 1px solid #ddd;\n        border-radius: 8px;\n        display: flex;\n        align-items: center;\n        gap: 10px;\n        margin: 4px 0\n    }\n\n    .dot {\n        width: 14px;\n        height: 14px;\n        border-radius: 50%;\n        background: #c00;\n        box-shadow: 0 0 6px rgba(0, 0, 0, .3)\n    }\n\n    .dot.on {\n        background: #0a0\n    }\n\n    @keyframes blink {\n\n        0%,\n        60% {\n            opacity: 1\n        }\n\n        80% {\n            opacity: .4\n        }\n\n        100% {\n            opacity: 1\n        }\n    }\n\n    .dot.blink {\n        animation: blink 1s infinite\n    }\n\n    .title {\n        font-weight: 700\n    }\n\n    .state {\n        font-weight: 700\n    }\n</style>\n<div class=\"card\">\n    <div class=\"dot\"\n        ng-class=\"{'on': (msg.payload==='COOLING'||msg.payload==='HEATING'), 'blink': (msg.payload==='COOLING'||msg.payload==='HEATING')}\">\n    </div>\n    <span class=\"title\">HVAC:</span>\n    <span class=\"state\">\n    {{ msg.payload==='COOLING' ? 'chłodzenie' : (msg.payload==='HEATING' ? 'grzanie' : 'OFF') }}\n  </span>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1010,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ui_led_pur",
+        "type": "ui_template",
+        "z": "72473b3995ff3a3b",
+        "group": "ui_group_main",
+        "name": "LED Purifier",
+        "order": 4,
+        "width": "",
+        "height": "",
+        "format": "<style>\n    .card {\n        padding: 8px 12px;\n        border: 1px solid #ddd;\n        border-radius: 8px;\n        display: flex;\n        align-items: center;\n        gap: 10px;\n        margin: 4px 0\n    }\n\n    .dot {\n        width: 14px;\n        height: 14px;\n        border-radius: 50%;\n        background: #c00;\n        box-shadow: 0 0 6px rgba(0, 0, 0, .3)\n    }\n\n    .dot.on {\n        background: #0a0\n    }\n\n    @keyframes blink {\n\n        0%,\n        60% {\n            opacity: 1\n        }\n\n        80% {\n            opacity: .4\n        }\n\n        100% {\n            opacity: 1\n        }\n    }\n\n    .dot.blink {\n        animation: blink 1s infinite\n    }\n\n    .title {\n        font-weight: 700\n    }\n\n    .state {\n        font-weight: 700\n    }\n</style>\n\n<div class=\"card\">\n    <div class=\"dot\" ng-class=\"{'on': (msg.payload==='ON'), 'blink': (msg.payload==='ON')}\"></div>\n    <span class=\"title\">Oczyszczacz powietrza:</span>\n    <span class=\"state\">\n    {{ msg.payload==='ON' ? 'działa' : 'OFF' }}\n  </span>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1070,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    }
+]

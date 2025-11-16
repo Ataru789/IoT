@@ -1,0 +1,36 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: iot_mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    restart: unless-stopped
+
+  nodered:
+    image: nodered/node-red:latest
+    container_name: iot_nodered
+    environment:
+      - TZ=Europe/Warsaw
+    ports:
+      - "1880:1880"
+    depends_on:
+      - mosquitto
+    volumes:
+      - ./nodered:/data
+    restart: unless-stopped
+
+  simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: iot_simulator
+    environment:
+      MQTT_HOST: mosquitto
+      MQTT_PORT: 1883
+      ROOM: room1
+      PUBLISH_INTERVAL_SEC: 1   # ← co 1 sekundę
+    depends_on:
+      - mosquitto
+    restart: unless-stopped

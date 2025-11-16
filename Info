@@ -1,0 +1,8 @@
+docker compose up -d --build
+
+Localhost:1880
+Localhost:1880/ui
+
+docker compose config
+docker logs iot_simulator   
+docker logs iot_mosquitto 
