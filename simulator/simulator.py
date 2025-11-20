@@ -12,7 +12,7 @@ temperature = 21.0
 aqi = 80.0
 
 # Stany urządzeń
-ac_on = False   # True = CHŁODZENIE (gdy za ciepło), False i grzanie sterujemy tą samą linią (AC)
+ac_on = False   # True = CHŁODZENIE (gdy za ciepło)
 heating_on = False  # True = GRZANIE (gdy za zimno)
 purifier_on = False
 
@@ -20,7 +20,7 @@ purifier_on = False
 COOL_RATE = 0.10
 HEAT_RATE = 0.10
 PURIFY_RATE = 1.5
-AIR_DECAY = -0.25
+AIR_DECAY = -0.25   
 
 TARGET = 21.0
 EPS = 0.05  # strefa martwa
@@ -29,7 +29,6 @@ client = mqtt.Client()
 
 def publish_states():
     client.publish(f"home/{ROOM}/state/ac", "ON" if (ac_on or heating_on) else "OFF", retain=True)
-    # Dodatkowo rozróżnijmy tryb dla Node-RED (COOLING/HEATING/OFF)
     if ac_on:
         mode = "COOLING"
     elif heating_on:
@@ -42,13 +41,13 @@ def publish_states():
 def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT, rc=", rc)
     # Komendy urządzeń (z Node-RED)
-    client.subscribe(f"home/{ROOM}/cmd/ac")              # 'ON'/'OFF' -> chłodzenie/grzanie włączone (tryb zależy od temp)
-    client.subscribe(f"home/{ROOM}/cmd/heating")         # 'ON'/'OFF' (na wszelki wypadek, jeśli chcesz rozdzielić)
+    client.subscribe(f"home/{ROOM}/cmd/ac")              # 'ON'/'OFF' 
+    client.subscribe(f"home/{ROOM}/cmd/heating")         # 'ON'/'OFF' 
     client.subscribe(f"home/{ROOM}/cmd/airpurifier")     # 'ON'/'OFF'
 
     # Wstrzyknięcia aktualnych wartości z UI
-    client.subscribe(f"home/{ROOM}/inject/temperature")  # np. "22.0"
-    client.subscribe(f"home/{ROOM}/inject/aqi")          # 0-100
+    client.subscribe(f"home/{ROOM}/inject/temperature")  
+    client.subscribe(f"home/{ROOM}/inject/aqi")          
 
     publish_states()
 
@@ -105,7 +104,7 @@ try:
         elif heating_on and not ac_on:
             temperature += HEAT_RATE
         else:
-            temperature += 0.0  # brak dryfu
+            temperature += 0.0
 
         # Symulacja jakości powietrza
         if purifier_on:
